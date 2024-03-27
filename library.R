@@ -1,5 +1,5 @@
-
 # Mengimpor pustaka 
+library(shinydashboard)
 library(rsconnect)
 library(dplyr)
 library(ggplot2)
@@ -8,9 +8,9 @@ library(shiny)
 library(plotly)
 library(shinyWidgets)
 library(RColorBrewer)
-library(ColorPalette)
 
 # Mengatur direktori kerja 
+
 setwd("C:/laragon/www/COSTUMER-SEGMENTATION-ANALYS-R/Customer-Segmentation")
 df <- read.csv('supermarket_sales.csv')
 
@@ -22,7 +22,3 @@ headers[10] = 'spending'
 headers[9] = 'tax'
 headers[14] = 'cost'
 colnames(df) = headers
-
-# Tetapkan output R dalam bahasa Inggris
-Sys.setlocale("LC_TIME", "C")
-

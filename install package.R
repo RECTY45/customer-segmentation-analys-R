@@ -1,0 +1,8 @@
+install.packages("rsconnect")
+install.packages("dplyr")
+install.packages("ggplot2")
+install.packages("tidyr")
+install.packages("shiny")
+install.packages("plotly")
+install.packages("shinyWidgets")
+install.packages("RColorBrewer")
