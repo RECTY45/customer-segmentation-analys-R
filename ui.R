@@ -4,11 +4,11 @@ ui <- dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-      menuItem("Lokasi", tabName = "locations", icon = icon("map-marker")),
-      menuItem("Waktu", tabName = "time", icon = icon("clock")),
-      menuItem("Ringkasan Penjualan", tabName = "salesoverview", icon = icon("bar-chart")),
+      menuItem("Location", tabName = "locations", icon = icon("map-marker")),
+      menuItem("Time", tabName = "time", icon = icon("clock")),
+      menuItem("SalesOverview", tabName = "salesoverview", icon = icon("bar-chart")),
       menuItem("Gender", tabName = "gender", icon = icon("venus-mars")),
-      menuItem("Keanggotaan", tabName = "membership", icon = icon("users")),
+      menuItem("Membership", tabName = "membership", icon = icon("users")),
       menuItem("Rating", tabName = "rating", icon = icon("star"))
     )
   ),
@@ -31,8 +31,8 @@ ui <- dashboardPage(
       tabItem(tabName = "time",
               fluidRow(
                 sidebarPanel(
-                  radioButtons("time", label = h3("Penjualan berdasarkan waktu"),
-                               choices = list("Hari kerja" = 1, "Jam kerja harian" = 2), 
+                  radioButtons("time", label = h3("Sales by time"),
+                               choices = list("Weekdays" = 1, "Daily hours" = 2), 
                                selected = 1)
                 ),
                 mainPanel(
@@ -44,8 +44,8 @@ ui <- dashboardPage(
       tabItem(tabName = "salesoverview",
               fluidRow(
                 sidebarPanel(
-                  selectInput("salesoverview", label = h3("Ringkasan Penjualan"),
-                              choices = list('Total sales per gender' = 1, 'Total penjualan per jenis produk' = 2, "Total sales per Kredit rating" = 3, 'Total sales per Keanggotaan' = 4),
+                  selectInput("salesoverview", label = h3("Total sales per gender"),
+                              choices = list('Total sales per gender' = 1, 'Total sales per type of product' = 2, "Total sales per credit rating" = 3, 'Total sales per membership' = 4),
                               selected = 1)
                 ),
                 mainPanel(
@@ -58,7 +58,7 @@ ui <- dashboardPage(
               fluidRow(
                 sidebarPanel(
                   selectInput("gender", label = h3("Gender"),
-                              choices = list('Jenis produk' = 1, 'Keanggotaan' = 2),
+                              choices = list('Type of product' = 1, 'Membership' = 2),
                               selected = 1)
                 ),
                 mainPanel(
