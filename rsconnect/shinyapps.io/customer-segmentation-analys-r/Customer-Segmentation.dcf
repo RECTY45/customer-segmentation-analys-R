@@ -1,13 +1,13 @@
 name: Customer-Segmentation
-title: Customer-Segmentation
+title: customer-segmentation
 username: customer-segmentation-analys-r
 account: customer-segmentation-analys-r
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 11604374
-bundleId: 8426228
+bundleId: 8426827
 url: https://customer-segmentation-analys-r.shinyapps.io/Customer-Segmentation/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: install package.R|README.md
+ignoredFiles: README.md

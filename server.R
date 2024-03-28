@@ -35,9 +35,9 @@ function(input, output, session){
           theme(plot.title = element_text(hjust = 0.5))  
       } else {
         df %>%
-          summarise(spending, time.intervals = ifelse(time < 11, 10, ifelse((time >= 11 & time < 12), 11, ifelse((time >=12 & time < 13),12, ifelse((time >= 13 & time < 14),13,ifelse((time >= 14 & time < 15),14,ifelse((time >= 15 & time < 16), 15, ifelse((time >= 16 & time < 17),16,ifelse((time >= 16 & time < 17),16,ifelse((time >= 17 & time < 18), 17,ifelse((time >= 18 & time < 19), 18,ifelse((time >= 19 & time <20),19,20)))))))))))) %>% 
+          reframe(spending, time.intervals = ifelse(time < 11, 10, ifelse((time >= 11 & time < 12), 11, ifelse((time >=12 & time < 13),12, ifelse((time >= 13 & time < 14),13,ifelse((time >= 14 & time < 15),14,ifelse((time >= 15 & time < 16), 15, ifelse((time >= 16 & time < 17),16,ifelse((time >= 16 & time < 17),16,ifelse((time >= 17 & time < 18), 17,ifelse((time >= 18 & time < 19), 18,ifelse((time >= 19 & time <20),19,20)))))))))))) %>% 
           group_by(time.intervals) %>% 
-          summarise(time.intervals, sales = mean(spending)) %>% 
+          reframe(time.intervals, sales = mean(spending)) %>% 
           distinct(.,time.intervals,sales) %>%
           ggplot(aes(x = time.intervals, y = sales)) +
           geom_line(stat = 'identity', color = 'darkblue') +
@@ -91,14 +91,14 @@ function(input, output, session){
                 plot.title = element_text(size = 20)) +
           theme(plot.title = element_text(hjust = 0.5))
       } else if (input$salesoverview == 3){
-        df %>% 
-          group_by(rating) %>% 
-          summarise(spending = mean(spending)) %>% 
-          distinct(rating, spending) %>% 
-          ggplot(aes(x = rating, y = spending )) +
+        df %>%
+          group_by(rating) %>%
+          summarise(spending = mean(spending)) %>%
+          distinct(rating, spending) %>%
+          ggplot(aes(x = rating, y = spending)) +
           theme_minimal() +
           geom_point(color = 'darkblue') +
-          geom_smooth(method = 'lm') +
+          geom_smooth(method = 'lm', formula = y ~ x) +  # Specify the formula here
           ylab('Total sales') +
           xlab('Rating') +
           ggtitle('Correlation between total sales and rating') +
@@ -106,6 +106,7 @@ function(input, output, session){
                 axis.title=element_text(size=20),
                 plot.title = element_text(size = 20)) +
           theme(plot.title = element_text(hjust = 0.5))
+        
       } else {
         df %>% 
           ggplot(aes(x = customer.type, y = spending)) +

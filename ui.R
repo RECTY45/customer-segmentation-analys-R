@@ -17,7 +17,7 @@ ui <- dashboardPage(
       # Dashboard Tab
       tabItem(tabName = "dashboard",
               fluidRow(
-                box(title = "Selamat datang di Costumer Segmentation",
+                box(title = "Welcome To Costumer Segmentation",
                     width = 12)
               )
       ),
