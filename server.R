@@ -1,12 +1,23 @@
-function(input, output, session){
-  observe({
+# server.R
+# Palette colors
+brighter_palette <- c("#FFCCCC", "#FFE6CC", "#FFF7CC", "#F0FFCC", "#CCFFFF", "#CCD8FF", "#FFCCF2", "#FFCCB2", "#FFFFCC", "#D8F1FF")
+server <- function(input, output, session){
+  
+  clusters <- reactive({
+    kmeans(df$rating, centers = input$clusters)
+  })
+
+     observe({
+     
     #--- location ---------------------------------------------------------------------------------------------------    
-    output$location <- renderPlot({
+  
+       output$location <- renderPlot({
       df %>%
         group_by(city) %>%
         ggplot(aes(x = city, y = spending)) +
-        geom_bar(stat = "identity", fill = "skyblue") +  # Ganti jenis plot dan warna
+        geom_bar(stat = "identity", aes(fill = city)) +  # Gunakan city sebagai variabel fill
         labs(x = "", y = "Total Sales", title = "Sales Per City",  face = "bold") +  # Update label sumbu dan judul
+        scale_fill_manual(values = brighter_palette) +  # Gunakan palet warna yang telah ditentukan
         theme_light() +  # Ubah tema menjadi tema light
         theme(axis.text = element_text(size = 20),  # Ubah ukuran teks sumbu
               axis.title = element_text(size = 25),  # Pertebal judul sumbu x dan y
@@ -14,8 +25,11 @@ function(input, output, session){
     })
     
     #--- Time ----------------------------------------------------------------------------------------------------- 
-    output$time <- renderPlot({
-      if (input$time == 1) {
+ 
+          output$time <- renderPlot({
+      
+      if (input$time == 1) 
+        {
         df %>%
           mutate(date = as.Date(date, format = "%m/%d/%y"),
                  day = weekdays(date)) %>%
@@ -50,10 +64,15 @@ function(input, output, session){
                 plot.title = element_text(size = 20)) +
           theme(plot.title = element_text(hjust = 0.5))
       }
+      
     })
+          
     #--- Sales overview ----------------------------------------------------------------------------------------------------- 
-     output$salesoverview <- renderPlot({
-      if (input$salesoverview == 1) {
+   
+            output$salesoverview <- renderPlot({
+       
+      if (input$salesoverview == 1)
+        {
         df %>% 
           group_by(gender) %>% 
           summarise(unit.price = mean(unit.price), 
@@ -108,7 +127,7 @@ function(input, output, session){
           theme(plot.title = element_text(hjust = 0.5))
         
       } else {
-        df %>% 
+        df %>%
           ggplot(aes(x = customer.type, y = spending)) +
           theme_minimal() +
           geom_boxplot(color = 'darkblue') +
@@ -120,10 +139,12 @@ function(input, output, session){
                 plot.title = element_text(size = 20)) +
           theme(plot.title = element_text(hjust = 0.5))
       }
+       
     })
      #--- Gender ----------------------------------------------------------------------------------------------------- 
      output$gender <- renderPlot({
-       if (input$gender == 1) {
+       if (input$gender == 1)
+         {
          df %>%
            group_by(gender, product.type) %>%
            summarise(spending = sum(spending), .groups = 'drop') %>% 
@@ -180,16 +201,28 @@ function(input, output, session){
      })
      
     #--- Rating -----------------------------------------------------------------------------------------------------
-    output$rating <- renderPlot(
-      df %>% 
-        ggplot(aes(x = customer.type, y = rating)) +
-        theme_minimal() +
-        geom_boxplot(color = 'darkblue') +
-        ylab('Rating') +
-        xlab('Membership') +
-        ggtitle('Membership by rating') +
-        theme(axis.text=element_text(size=20),
-              axis.title=element_text(size=20),
-              plot.title = element_text(size = 20)) +
-        theme(plot.title = element_text(hjust = 0.5)))
-  })}
+     
+     output$rating <- renderPlot({
+       ggplot(df, aes(x = customer.type, y = rating)) +
+         geom_boxplot(color = 'darkblue') +
+         labs(
+           y = 'Rating',
+           x = 'Membership',
+           title = 'Membership by rating'
+         ) +
+         theme_minimal() +
+         theme(
+           axis.text = element_text(size = 20),
+           axis.title = element_text(size = 20),
+           plot.title = element_text(size = 20, hjust = 0.5)
+         )
+     })
+     
+     #--- Clustering -----------------------------------------------------------------------------------------------------
+     output$cluster_plot <- renderPlot({
+       plot(df$rating, col = clusters()$cluster, main = "K-means Clustering")
+       points(clusters()$centers, col = 1:input$clusters, pch = 8, cex = 2)
+     })
+     
+  })
+  }

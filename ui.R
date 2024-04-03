@@ -1,6 +1,20 @@
+# Mengimpor pustaka 
+library(shinydashboard)
+library(rsconnect)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(shiny)
+library(plotly)
+library(shinyWidgets)
+library(shiny)
+library(plotly)
+library(cluster)
+library(stats)
+
 # Define UI
 ui <- dashboardPage(
-  dashboardHeader(title = tags$a(tags$img(src="icon.jpg", height = '50', width = '200')), titleWidth = 240),
+  dashboardHeader(title = img(src="icon.jpg", height = '53',widht='100',align='right'),titleWidth = 200),
   dashboardSidebar(
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
@@ -9,7 +23,8 @@ ui <- dashboardPage(
       menuItem("SalesOverview", tabName = "salesoverview", icon = icon("bar-chart")),
       menuItem("Gender", tabName = "gender", icon = icon("venus-mars")),
       menuItem("Membership", tabName = "membership", icon = icon("users")),
-      menuItem("Rating", tabName = "rating", icon = icon("star"))
+      menuItem("Rating", tabName = "rating", icon = icon("star")),
+      menuItem("Clustering", tabName = "clustering", icon = icon("chart-bar"))
     )
   ),
   dashboardBody(
@@ -77,7 +92,20 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput("rating"), width = 12)
               )
+      ),
+      
+            # Clustering Tab
+      tabItem(tabName = "clustering",
+              fluidRow(
+                sidebarPanel(
+                  numericInput("clusters", "Number of clusters:", 3, min = 1, max = 10)
+                ),
+                mainPanel(
+                  plotOutput("cluster_plot")
+                )
+              )
       )
+      
     )
   )
 )
